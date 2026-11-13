@@ -2,6 +2,16 @@
 
 A lightweight local chat workspace for an existing 9Router or OmniRoute installation. It discovers models from the router's live OpenAI-compatible catalog and sends conversations through the selected router. OpenQoder is an independent project, not an official Qoder product.
 
+## Screenshots
+
+![OpenQoder workspace](screenshots/workspace.png)
+
+### Connection Settings, Model Selector & Sidebar Search
+
+| Connection settings | Model selector | Sidebar search |
+| --- | --- | --- |
+| ![Connection settings modal](screenshots/settings-modal.png) | ![Model selector dropdown](screenshots/model-selector.png) | ![Sidebar search filter](screenshots/sidebar-search.png) |
+
 ## Start
 
 1. Install Python 3.9 or newer. No Python packages are required.
