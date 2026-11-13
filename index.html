@@ -16,37 +16,343 @@
     <symbol id="i-search" viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4 4"/></symbol>
     <symbol id="i-settings" viewBox="0 0 24 24"><path d="M10 3h4l.5 2.3 2 .9 2-1.2 2.8 2.8-1.2 2 .9 2 2 .5v4l-2 .5-.9 2 1.2 2-2.8 2.8-2-1.2-2 .9L14 23h-4l-.5-2.3-2-.9-2 1.2-2.8-2.8 1.2-2-.9-2L1 13.3v-4l2-.5.9-2-1.2-2L5.5 2l2 1.2 2-.9L10 0" transform="translate(1 2) scale(.9)"/><circle cx="12" cy="12" r="3"/></symbol>
     <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M12 19V5M6 11l6-6 6 6"/></symbol>
+    <symbol id="i-arrow-right" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
     <symbol id="i-chevron" viewBox="0 0 24 24"><path d="m7 10 5 5 5-5"/></symbol>
     <symbol id="i-code" viewBox="0 0 24 24"><path d="m8 7-5 5 5 5M16 7l5 5-5 5M14 4l-4 16"/></symbol>
     <symbol id="i-spark" viewBox="0 0 24 24"><path d="m12 3 1.8 5.8L20 11l-6.2 2.2L12 19l-1.8-5.8L4 11l6.2-2.2L12 3ZM19 16l.6 1.8L21.5 18l-1.9.7L19 21l-.6-2.3L16.5 18l1.9-.2L19 16Z"/></symbol>
     <symbol id="i-folder" viewBox="0 0 24 24"><path d="M3 7a2 2 0 0 1 2-2h5l2 2h7a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7Z"/></symbol>
+    <symbol id="i-folder-open" viewBox="0 0 24 24"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v2H7.5a2 2 0 0 0-1.9 1.4L3.5 19H5a2 2 0 0 0 1.9-1.4L8.6 13H21l-1.7 5.2a2 2 0 0 1-1.9 1.3H4.5A1.5 1.5 0 0 1 3 18V7Z"/></symbol>
     <symbol id="i-panel" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M9 4v16"/></symbol>
     <symbol id="i-close" viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"/></symbol>
     <symbol id="i-refresh" viewBox="0 0 24 24"><path d="M20 7v5h-5M4 17v-5h5M5.5 9a7 7 0 0 1 12-2L20 12M4 12l2.5 5a7 7 0 0 0 12-2"/></symbol>
     <symbol id="i-trash" viewBox="0 0 24 24"><path d="M4 7h16M9 7V4h6v3m3 0-1 13H7L6 7m4 4v5m4-5v5"/></symbol>
     <symbol id="i-copy" viewBox="0 0 24 24"><rect x="8" y="8" width="11" height="12" rx="2"/><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h2"/></symbol>
+    <symbol id="i-file-doc" viewBox="0 0 24 24"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8l-5-5Z"/><path d="M14 3v5h5M9 13h6M9 17h4"/></symbol>
+    <symbol id="i-branch" viewBox="0 0 24 24"><circle cx="6" cy="6" r="2.5"/><circle cx="18" cy="8" r="2.5"/><circle cx="6" cy="18" r="2.5"/><path d="M6 8.5v7M8.5 18a6 6 0 0 0 6-6v-1.5a2.5 2.5 0 0 1 1-2"/></symbol>
+    <symbol id="i-terminal" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="m7 10 3 2.5L7 15M12 15h5"/></symbol>
+    <symbol id="i-sliders" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/><circle cx="9" cy="6" r="2" fill="#fff"/><circle cx="15" cy="12" r="2" fill="#fff"/><circle cx="11" cy="18" r="2" fill="#fff"/></symbol>
+    <symbol id="i-dots" viewBox="0 0 24 24"><circle cx="6" cy="12" r="1.3" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="1.3" fill="currentColor" stroke="none"/><circle cx="18" cy="12" r="1.3" fill="currentColor" stroke="none"/></symbol>
+    <symbol id="i-save" viewBox="0 0 24 24"><path d="M12 4v11m0 0-4-4m4 4 4-4M5 17v2a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-2"/></symbol>
+    <symbol id="i-laptop" viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="11" rx="1.5"/><path d="M2 19h20"/></symbol>
   </svg>
+
   <div class="app-shell">
     <aside class="sidebar" id="sidebar">
-      <div class="brand-row"><div class="brand"><svg><use href="#i-logo"/></svg><span>OpenQoder</span></div><button class="icon-button sidebar-close" id="sidebar-close" title="Close sidebar" aria-label="Close sidebar"><svg><use href="#i-close"/></svg></button></div>
-      <div class="mode-pill"><span class="mode-icon"><svg><use href="#i-code"/></svg></span> Coding</div>
+      <div class="brand-row">
+        <div class="window-dots" aria-hidden="true">
+          <span class="dot dot-red"></span>
+          <span class="dot dot-yellow"></span>
+          <span class="dot dot-green"></span>
+        </div>
+        <div class="brand">
+          <svg><use href="#i-logo"/></svg>
+          <span>OpenQoder</span>
+        </div>
+        <button class="icon-button sidebar-close" id="sidebar-close" title="Close sidebar" aria-label="Close sidebar">
+          <svg><use href="#i-close"/></svg>
+        </button>
+      </div>
+
+      <div class="mode-row">
+        <div class="mode-pill">
+          <span class="mode-icon"><svg><use href="#i-code"/></svg></span>
+          <span>Coding</span>
+        </div>
+        <button class="mode-aux-btn" id="mode-project-btn" type="button" title="Open project folder" aria-label="Open project folder">
+          <svg><use href="#i-folder-open"/></svg>
+        </button>
+      </div>
+
       <nav class="main-nav" aria-label="Main navigation">
-        <button class="nav-item active" id="new-chat"><svg><use href="#i-plus"/></svg><span>New task</span><span class="shortcut">Ctrl K</span></button>
-        <button class="nav-item" id="search-button"><svg><use href="#i-search"/></svg><span>Search</span></button>
+        <button class="nav-item active" id="new-chat" type="button">
+          <svg><use href="#i-plus"/></svg>
+          <span>New Task</span>
+          <span class="shortcut">Ctrl K</span>
+        </button>
+        <button class="nav-item" id="nav-projects" type="button">
+          <svg><use href="#i-grid"/></svg>
+          <span>Projects</span>
+          <span class="nav-badge">Local</span>
+        </button>
+        <button class="nav-item" id="search-button" type="button" aria-expanded="false" aria-controls="sidebar-search-wrap">
+          <svg><use href="#i-search"/></svg>
+          <span>Search</span>
+        </button>
       </nav>
-      <div class="project-section"><div class="section-heading">Project files</div><button class="project-action" id="open-project"><svg><use href="#i-folder"/></svg> Open project folder</button><div class="file-list" id="file-list"></div></div><div class="sidebar-section"><div class="section-heading">Recent conversations <button id="clear-chats" title="Clear conversations" aria-label="Clear conversations"><svg><use href="#i-trash"/></svg></button></div><div id="history" class="history"><p class="history-empty">Your conversations will appear here.</p></div></div>
-      <div class="sidebar-bottom"><button class="nav-item" id="settings-button"><svg><use href="#i-settings"/></svg><span>Settings</span></button><div class="bottom-brand"><svg><use href="#i-logo"/></svg><span>OpenQoder</span><span class="version">LOCAL</span></div></div>
+
+      <div class="sidebar-search-wrap" id="sidebar-search-wrap" hidden>
+        <svg><use href="#i-search"/></svg>
+        <input type="search" id="sidebar-search" placeholder="Filter conversations..." aria-label="Filter conversations">
+        <button type="button" id="clear-search" aria-label="Clear search" hidden><svg><use href="#i-close"/></svg></button>
+      </div>
+
+      <div class="project-section">
+        <div class="section-heading">Folders</div>
+        <button class="project-action" id="open-project" type="button">
+          <svg><use href="#i-folder"/></svg>
+          <span class="project-label">Open project folder</span>
+        </button>
+        <div class="file-list" id="file-list"></div>
+      </div>
+
+      <div class="sidebar-section">
+        <div class="section-heading">
+          <span>Recent conversations</span>
+          <button id="clear-chats" type="button" title="Clear conversations" aria-label="Clear conversations">
+            <svg><use href="#i-trash"/></svg>
+          </button>
+        </div>
+        <div id="history" class="history">
+          <p class="history-empty">Your conversations will appear here.</p>
+        </div>
+      </div>
+
+      <div class="sidebar-bottom">
+        <div class="sidebar-utility-nav">
+          <button class="nav-item" id="settings-button" type="button">
+            <svg><use href="#i-sliders"/></svg>
+            <span>Router &amp; Settings</span>
+          </button>
+        </div>
+        <div class="bottom-brand">
+          <div class="bottom-brand-left">
+            <svg><use href="#i-logo"/></svg>
+            <span>OpenQoder</span>
+          </div>
+          <span class="version">LOCAL</span>
+        </div>
+      </div>
     </aside>
+
     <main class="main">
-      <header class="topbar"><div class="top-left"><button class="icon-button" id="sidebar-open" title="Toggle sidebar" aria-label="Toggle sidebar"><svg><use href="#i-panel"/></svg></button><span class="top-divider"></span><span class="top-title" id="conversation-title">New task</span></div><div class="top-right"><span class="connection-dot" id="connection-dot"></span><span id="connection-label">Connect a router</span><button class="top-settings" id="top-settings">Settings <svg><use href="#i-chevron"/></svg></button></div></header>
-      <div class="main-scroll" id="main-scroll"><div class="content" id="content">
-        <section class="welcome" id="welcome"><div class="welcome-mark"><svg><use href="#i-logo"/></svg></div><h1>What would you like to work on?</h1><p>Start a task or choose a project to get started.</p><div class="suggestions" id="suggestions"><button type="button" data-prompt="Help me plan and build a web application."><svg><use href="#i-code"/></svg> Build something</button><button type="button" data-prompt="Explain this code concept step by step: "><svg><use href="#i-spark"/></svg> Learn a concept</button><button type="button" data-prompt="Help me debug an issue. First, ask me for the relevant code and error."><svg><use href="#i-chat"/></svg> Debug an issue</button></div></section>
-        <div class="messages" id="messages" aria-live="polite"></div>
-      </div></div>
-      <div class="composer-area"><div class="composer-wrap"><form class="composer" id="composer"><textarea id="prompt" rows="3" placeholder="Describe a task or ask a question..." aria-label="Message OpenQoder"></textarea><div class="attachment" id="attachment" hidden><svg><use href="#i-code"/></svg><span id="attachment-name"></span><button type="button" id="remove-attachment" aria-label="Remove attached file"><svg><use href="#i-close"/></svg></button></div><div class="composer-toolbar"><div class="composer-left"><button type="button" class="composer-add" id="composer-project" title="Open project folder" aria-label="Open project folder"><svg><use href="#i-plus"/></svg></button><div class="toolbar-divider"></div><div class="model-select-wrap"><svg><use href="#i-spark"/></svg><select id="model-select" aria-label="Choose model"><option value="">Select a model</option></select></div><button type="button" class="refresh-models" id="refresh-models" title="Refresh available models" aria-label="Refresh available models"><svg><use href="#i-refresh"/></svg></button></div><div class="composer-right"><span class="enter-hint">Enter to send</span><button class="send-button" id="send-button" aria-label="Send message" type="submit"><svg><use href="#i-arrow"/></svg></button></div></div></form><div class="composer-footer"><span><svg><use href="#i-folder"/></svg> Local session</span><span>OpenQoder can make mistakes. Review generated code.</span></div></div></div>
+      <header class="topbar">
+        <div class="top-left">
+          <button class="icon-button" id="sidebar-open" type="button" title="Toggle sidebar" aria-label="Toggle sidebar">
+            <svg><use href="#i-panel"/></svg>
+          </button>
+          <span class="top-divider"></span>
+          <span class="top-task-icon" aria-hidden="true"><svg><use href="#i-terminal"/></svg></span>
+          <span class="top-title" id="conversation-title">New task</span>
+        </div>
+        <div class="top-right">
+          <div class="connection-pill" id="connection-pill">
+            <span class="connection-dot" id="connection-dot"></span>
+            <span id="connection-label">Connect a router</span>
+          </div>
+          <button class="top-settings" id="top-settings" type="button">
+            <svg><use href="#i-sliders"/></svg>
+            <span>Settings</span>
+            <svg class="top-chev"><use href="#i-chevron"/></svg>
+          </button>
+        </div>
+      </header>
+
+      <div class="main-scroll" id="main-scroll">
+        <div class="content" id="content">
+          <section class="welcome" id="welcome">
+            <div class="welcome-head">
+              <div class="welcome-badge">
+                <span class="welcome-badge-dot"></span>
+                <span>Local Agentic Coding Workspace</span>
+              </div>
+              <h1>The New OpenQoder: An Agentic Coding Workspace</h1>
+              <p>Connect your local 9Router or OmniRoute catalog, attach project files, and build cleanly from one focused workspace.</p>
+              <div class="welcome-ctas">
+                <button type="button" class="cta-primary" id="welcome-connect">
+                  <svg><use href="#i-sliders"/></svg>
+                  <span>Connect Router</span>
+                </button>
+                <button type="button" class="cta-secondary" id="welcome-project">
+                  <span>Open Project Folder</span>
+                  <svg><use href="#i-arrow-right"/></svg>
+                </button>
+              </div>
+            </div>
+
+            <div class="welcome-showcase" aria-hidden="true">
+              <svg class="showcase-ribbons" viewBox="0 0 820 230" preserveAspectRatio="xMidYMid slice">
+                <path d="M-40 35 C 120 15, 195 190, 315 245" stroke="#2f8f34" stroke-width="22" fill="none"/>
+                <path d="M105 -20 C 175 95, 160 175, 255 245" stroke="#255a41" stroke-width="18" fill="none" opacity="0.72"/>
+                <path d="M510 -25 C 520 85, 650 155, 845 140" stroke="#255a41" stroke-width="20" fill="none" opacity="0.65"/>
+                <path d="M620 -15 C 585 95, 670 195, 840 215" stroke="#2f8f34" stroke-width="16" fill="none"/>
+                <circle cx="88" cy="118" r="18" stroke="#9be08e" stroke-width="1.2" fill="none" opacity="0.7"/>
+                <circle cx="88" cy="118" r="3" fill="#e9f8e6"/>
+                <circle cx="728" cy="108" r="16" stroke="#9be08e" stroke-width="1.2" fill="none" opacity="0.7"/>
+                <circle cx="728" cy="108" r="2.8" fill="#e9f8e6"/>
+              </svg>
+              <div class="showcase-card">
+                <div class="showcase-card-bar">
+                  <span class="showcase-dots"><i></i><i></i><i></i></span>
+                  <span class="showcase-bar-title">openqoder-workspace — local session</span>
+                  <span class="showcase-bar-pill">Coding</span>
+                </div>
+                <div class="showcase-card-body">
+                  <div class="showcase-line">
+                    <span class="showcase-check">✓</span>
+                    <span>Router proxy bound strictly to loopback (<code>127.0.0.1</code>)</span>
+                  </div>
+                  <div class="showcase-diff-card">
+                    <div class="showcase-diff-head">
+                      <span class="showcase-diff-icon"><svg><use href="#i-file-doc"/></svg></span>
+                      <span class="showcase-diff-title">Ready for project context &amp; fenced code review</span>
+                      <span class="showcase-diff-stats"><span class="stat-add">+Live</span> <span class="stat-muted">Stream</span></span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="suggestions-section" id="suggestions">
+              <div class="suggestions-header">
+                <span class="suggestions-title">Start a workflow</span>
+                <span class="suggestions-sub">Choose a starter prompt or type your own below</span>
+              </div>
+              <div class="suggestions-grid">
+                <button type="button" class="suggestion-card" data-prompt="Help me plan and build a clean web application. Ask me for the core requirements and stack first.">
+                  <span class="suggestion-top">
+                    <span class="suggestion-icon"><svg><use href="#i-code"/></svg></span>
+                    <span class="suggestion-tag">Build</span>
+                  </span>
+                  <span class="suggestion-name">Build an application</span>
+                  <span class="suggestion-desc">Architect features, components, and implementation steps.</span>
+                </button>
+                <button type="button" class="suggestion-card" data-prompt="Explain this code concept step by step with concise examples: ">
+                  <span class="suggestion-top">
+                    <span class="suggestion-icon"><svg><use href="#i-spark"/></svg></span>
+                    <span class="suggestion-tag">Learn</span>
+                  </span>
+                  <span class="suggestion-name">Explain a concept</span>
+                  <span class="suggestion-desc">Break down unfamiliar patterns or algorithms clearly.</span>
+                </button>
+                <button type="button" class="suggestion-card" data-prompt="Help me debug an issue. First, ask me for the relevant code, expected behavior, and error output.">
+                  <span class="suggestion-top">
+                    <span class="suggestion-icon"><svg><use href="#i-terminal"/></svg></span>
+                    <span class="suggestion-tag">Debug</span>
+                  </span>
+                  <span class="suggestion-name">Debug an issue</span>
+                  <span class="suggestion-desc">Isolate root causes from stack traces and attached files.</span>
+                </button>
+                <button type="button" class="suggestion-card" data-prompt="Review the attached code for correctness, edge cases, and maintainability, and suggest minimal improvements.">
+                  <span class="suggestion-top">
+                    <span class="suggestion-icon"><svg><use href="#i-file-doc"/></svg></span>
+                    <span class="suggestion-tag">Review</span>
+                  </span>
+                  <span class="suggestion-name">Review attached code</span>
+                  <span class="suggestion-desc">Inspect project files for bugs, types, and clean refactors.</span>
+                </button>
+              </div>
+            </div>
+          </section>
+
+          <div class="messages" id="messages" aria-live="polite"></div>
+        </div>
+      </div>
+
+      <div class="composer-area">
+        <div class="composer-wrap">
+          <form class="composer" id="composer">
+            <textarea id="prompt" rows="2" placeholder="Continue this session... or describe a coding task" aria-label="Message OpenQoder"></textarea>
+            <div class="attachment" id="attachment" hidden>
+              <span class="attachment-badge"><svg><use href="#i-file-doc"/></svg></span>
+              <span id="attachment-name"></span>
+              <button type="button" id="remove-attachment" aria-label="Remove attached file">
+                <svg><use href="#i-close"/></svg>
+              </button>
+            </div>
+            <div class="composer-toolbar">
+              <div class="composer-left">
+                <button type="button" class="composer-add" id="composer-project" title="Attach from project folder" aria-label="Open project folder">
+                  <svg><use href="#i-plus"/></svg>
+                </button>
+                <div class="toolbar-divider"></div>
+                <span class="composer-mode-tag">
+                  <svg><use href="#i-code"/></svg>
+                  <span>Ask for code</span>
+                </span>
+              </div>
+              <div class="composer-right">
+                <div class="model-select-wrap">
+                  <svg><use href="#i-spark"/></svg>
+                  <select id="model-select" aria-label="Choose model">
+                    <option value="">Select a model</option>
+                  </select>
+                </div>
+                <button type="button" class="refresh-models" id="refresh-models" title="Refresh available models" aria-label="Refresh available models">
+                  <svg><use href="#i-refresh"/></svg>
+                </button>
+                <span class="enter-hint">Enter</span>
+                <button class="send-button" id="send-button" aria-label="Send message" type="submit">
+                  <svg><use href="#i-arrow"/></svg>
+                </button>
+              </div>
+            </div>
+          </form>
+
+          <div class="composer-footer">
+            <div class="footer-left">
+              <span class="footer-item">
+                <svg><use href="#i-folder"/></svg>
+                <span id="footer-folder">No folder open</span>
+              </span>
+              <span class="footer-item">
+                <svg><use href="#i-laptop"/></svg>
+                <span>Local</span>
+              </span>
+              <span class="footer-item">
+                <svg><use href="#i-branch"/></svg>
+                <span id="footer-router">9Router</span>
+              </span>
+            </div>
+            <div class="footer-right">
+              <span class="footer-disclaimer">Review generated code</span>
+              <span class="footer-meter" id="footer-meter">
+                <span class="meter-bars" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span>
+                <span class="meter-text" id="footer-meter-text">Offline</span>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
     </main>
   </div>
-  <div class="modal-backdrop" id="settings-modal" hidden><section class="modal" role="dialog" aria-modal="true" aria-labelledby="settings-title"><div class="modal-header"><div><div class="modal-kicker">OPENQODER</div><h2 id="settings-title">Connection settings</h2><p>Connect your local 9Router or OmniRoute instance.</p></div><button class="icon-button" id="close-settings" aria-label="Close settings"><svg><use href="#i-close"/></svg></button></div><form id="settings-form"><label for="router-preset">Router</label><select id="router-preset"><option value="9router">9Router</option><option value="omniroute">OmniRoute</option><option value="custom">Custom OpenAI-compatible endpoint</option></select><label for="base-url">API base URL</label><input id="base-url" type="url" placeholder="http://127.0.0.1:20128/v1" required><p class="field-help">Use your router's OpenAI-compatible API URL, including <code>/v1</code>.</p><label for="api-key">Router API key <span>optional if your router allows it</span></label><input id="api-key" type="password" autocomplete="off" placeholder="Enter your router API key"><p class="field-help">Saved only in this browser on this device. Configure free providers and their credentials in your router first.</p><div class="modal-note"><svg><use href="#i-spark"/></svg><span>Models are loaded live from your router. Availability and pricing depend on your router configuration; select a provider and model you have verified are free.</span></div><div class="modal-actions"><button type="button" class="secondary-button" id="cancel-settings">Cancel</button><button type="submit" class="primary-button" id="save-settings">Save &amp; load models</button></div></form></section></div>
+
+  <div class="modal-backdrop" id="settings-modal" hidden>
+    <section class="modal" role="dialog" aria-modal="true" aria-labelledby="settings-title">
+      <div class="modal-header">
+        <div>
+          <div class="modal-kicker">OPENQODER · ROUTER PROXY</div>
+          <h2 id="settings-title">Connection settings</h2>
+          <p>Connect your local 9Router or OmniRoute instance.</p>
+        </div>
+        <button class="icon-button" id="close-settings" type="button" aria-label="Close settings">
+          <svg><use href="#i-close"/></svg>
+        </button>
+      </div>
+      <form id="settings-form">
+        <label for="router-preset">Router</label>
+        <select id="router-preset">
+          <option value="9router">9Router</option>
+          <option value="omniroute">OmniRoute</option>
+          <option value="custom">Custom OpenAI-compatible endpoint</option>
+        </select>
+        <label for="base-url">API base URL</label>
+        <input id="base-url" type="url" placeholder="http://127.0.0.1:20128/v1" required>
+        <p class="field-help">Use your router's OpenAI-compatible API URL, including <code>/v1</code>.</p>
+        <label for="api-key">Router API key <span>optional if your router allows it</span></label>
+        <input id="api-key" type="password" autocomplete="off" placeholder="Enter your router API key">
+        <p class="field-help">Saved only in this browser on this device. Configure free providers and their credentials in your router first.</p>
+        <div class="modal-note">
+          <svg><use href="#i-spark"/></svg>
+          <span>Models are loaded live from your router. Availability and pricing depend on your router configuration; select a provider and model you have verified are free.</span>
+        </div>
+        <div class="modal-actions">
+          <button type="button" class="secondary-button" id="cancel-settings">Cancel</button>
+          <button type="submit" class="primary-button" id="save-settings">Save &amp; load models</button>
+        </div>
+      </form>
+    </section>
+  </div>
+
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
   <script src="/app.js"></script>
   <script src="/dropdowns.js"></script>
