@@ -10,7 +10,11 @@
     trigger.id = `${select.id}-trigger`;
     trigger.setAttribute('aria-haspopup', 'listbox');
     trigger.setAttribute('aria-expanded', 'false');
-    trigger.setAttribute('aria-label', kind === 'model' ? 'Choose model' : 'Router');
+    const labelText = kind === 'model' ? 'Choose model' : kind === 'approval' ? 'Approval mode' : 'Router';
+    const headingText = kind === 'model' ? 'AVAILABLE MODELS' : kind === 'approval' ? 'EXECUTION MODE' : 'SELECT ROUTER';
+    const optionsLabel = kind === 'model' ? 'Available models' : kind === 'approval' ? 'Execution mode options' : 'Router options';
+
+    trigger.setAttribute('aria-label', labelText);
     const label = document.createElement('span');
     label.className = 'dropdown-value';
     const arrow = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
@@ -23,12 +27,12 @@
     panel.hidden = true;
     const heading = document.createElement('div');
     heading.className = 'dropdown-heading';
-    heading.textContent = kind === 'model' ? 'AVAILABLE MODELS' : 'SELECT ROUTER';
+    heading.textContent = headingText;
     const list = document.createElement('div');
     list.className = 'dropdown-options';
     list.id = `${select.id}-options`;
     list.setAttribute('role', 'listbox');
-    list.setAttribute('aria-label', kind === 'model' ? 'Available models' : 'Router options');
+    list.setAttribute('aria-label', optionsLabel);
     trigger.setAttribute('aria-controls', list.id);
     panel.append(heading, list);
     select.insertAdjacentElement('afterend', root);
@@ -48,7 +52,7 @@
       const selected = select.selectedOptions[0];
       label.textContent = selected?.textContent || 'Select an option';
       trigger.title = label.textContent;
-      trigger.setAttribute('aria-label', `${kind === 'model' ? 'Choose model' : 'Router'}: ${label.textContent}`);
+      trigger.setAttribute('aria-label', `${labelText}: ${label.textContent}`);
       list.replaceChildren();
       [...select.options].forEach(option => {
         const item = document.createElement('button');
@@ -105,4 +109,6 @@
   }
   enhance(document.getElementById('model-select'), 'model');
   enhance(document.getElementById('router-preset'), 'router');
+  const approvalSelect = document.getElementById('approval-mode');
+  if (approvalSelect) enhance(approvalSelect, 'approval');
 })();

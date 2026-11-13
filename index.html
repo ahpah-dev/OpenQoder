@@ -14,7 +14,6 @@
     <symbol id="i-chat" viewBox="0 0 24 24"><path d="M20 11.4a7.9 7.9 0 0 1-8.2 7.8 9 9 0 0 1-3.5-.7L4 20l1.2-3.7A7.6 7.6 0 0 1 3.5 11.4a8.3 8.3 0 0 1 16.5 0Z"/></symbol>
     <symbol id="i-grid" viewBox="0 0 24 24"><rect x="4" y="4" width="7" height="7" rx="1"/><rect x="13" y="4" width="7" height="7" rx="1"/><rect x="4" y="13" width="7" height="7" rx="1"/><rect x="13" y="13" width="7" height="7" rx="1"/></symbol>
     <symbol id="i-search" viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4 4"/></symbol>
-    <symbol id="i-settings" viewBox="0 0 24 24"><path d="M10 3h4l.5 2.3 2 .9 2-1.2 2.8 2.8-1.2 2 .9 2 2 .5v4l-2 .5-.9 2 1.2 2-2.8 2.8-2-1.2-2 .9L14 23h-4l-.5-2.3-2-.9-2 1.2-2.8-2.8 1.2-2-.9-2L1 13.3v-4l2-.5.9-2-1.2-2L5.5 2l2 1.2 2-.9L10 0" transform="translate(1 2) scale(.9)"/><circle cx="12" cy="12" r="3"/></symbol>
     <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M12 19V5M6 11l6-6 6 6"/></symbol>
     <symbol id="i-arrow-right" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
     <symbol id="i-chevron" viewBox="0 0 24 24"><path d="m7 10 5 5 5-5"/></symbol>
@@ -31,9 +30,14 @@
     <symbol id="i-branch" viewBox="0 0 24 24"><circle cx="6" cy="6" r="2.5"/><circle cx="18" cy="8" r="2.5"/><circle cx="6" cy="18" r="2.5"/><path d="M6 8.5v7M8.5 18a6 6 0 0 0 6-6v-1.5a2.5 2.5 0 0 1 1-2"/></symbol>
     <symbol id="i-terminal" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="m7 10 3 2.5L7 15M12 15h5"/></symbol>
     <symbol id="i-sliders" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/><circle cx="9" cy="6" r="2" fill="#fff"/><circle cx="15" cy="12" r="2" fill="#fff"/><circle cx="11" cy="18" r="2" fill="#fff"/></symbol>
-    <symbol id="i-dots" viewBox="0 0 24 24"><circle cx="6" cy="12" r="1.3" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="1.3" fill="currentColor" stroke="none"/><circle cx="18" cy="12" r="1.3" fill="currentColor" stroke="none"/></symbol>
     <symbol id="i-save" viewBox="0 0 24 24"><path d="M12 4v11m0 0-4-4m4 4 4-4M5 17v2a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-2"/></symbol>
     <symbol id="i-laptop" viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="11" rx="1.5"/><path d="M2 19h20"/></symbol>
+    <symbol id="i-image" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="8.5" cy="10" r="1.5"/><path d="m21 16-5-5-4 4-2-2-7 6"/></symbol>
+    <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3 5 6v5.5c0 4.5 3 8.5 7 9.5 4-1 7-5 7-9.5V6l-7-3Z"/><path d="m9.5 12 1.8 1.8L15 10"/></symbol>
+    <symbol id="i-stop" viewBox="0 0 24 24"><rect x="6.5" y="6.5" width="11" height="11" rx="2" fill="currentColor" stroke="none"/></symbol>
+    <symbol id="i-undo" viewBox="0 0 24 24"><path d="M9 14 4 9l5-5"/><path d="M4 9h10.5a5.5 5.5 0 0 1 0 11H11"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12 4.5 4.5L19 7"/></symbol>
+    <symbol id="i-edit" viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></symbol>
   </svg>
 
   <div class="app-shell">
@@ -48,7 +52,7 @@
           <svg><use href="#i-logo"/></svg>
           <span>OpenQoder</span>
         </div>
-        <button class="icon-button sidebar-close" id="sidebar-close" title="Close sidebar" aria-label="Close sidebar">
+        <button class="icon-button sidebar-close" id="sidebar-close" type="button" title="Close sidebar" aria-label="Close sidebar">
           <svg><use href="#i-close"/></svg>
         </button>
       </div>
@@ -56,9 +60,9 @@
       <div class="mode-row">
         <div class="mode-pill">
           <span class="mode-icon"><svg><use href="#i-code"/></svg></span>
-          <span>Coding</span>
+          <span>Coding Agent</span>
         </div>
-        <button class="mode-aux-btn" id="mode-project-btn" type="button" title="Open project folder" aria-label="Open project folder">
+        <button class="mode-aux-btn" id="mode-project-btn" type="button" title="Open workspace folder" aria-label="Open workspace folder">
           <svg><use href="#i-folder-open"/></svg>
         </button>
       </div>
@@ -72,7 +76,7 @@
         <button class="nav-item" id="nav-projects" type="button">
           <svg><use href="#i-grid"/></svg>
           <span>Projects</span>
-          <span class="nav-badge">Local</span>
+          <span class="nav-badge">Agent</span>
         </button>
         <button class="nav-item" id="search-button" type="button" aria-expanded="false" aria-controls="sidebar-search-wrap">
           <svg><use href="#i-search"/></svg>
@@ -87,10 +91,20 @@
       </div>
 
       <div class="project-section">
-        <div class="section-heading">Folders</div>
+        <div class="section-heading">
+          <span>Folders</span>
+          <div class="section-actions">
+            <button id="edit-workspace-btn" type="button" title="Enter workspace path" aria-label="Enter workspace path">
+              <svg><use href="#i-edit"/></svg>
+            </button>
+            <button id="refresh-workspace" type="button" title="Refresh folder tree" aria-label="Refresh folder tree">
+              <svg><use href="#i-refresh"/></svg>
+            </button>
+          </div>
+        </div>
         <button class="project-action" id="open-project" type="button">
           <svg><use href="#i-folder"/></svg>
-          <span class="project-label">Open project folder</span>
+          <span class="project-label">Open workspace folder</span>
         </button>
         <div class="file-list" id="file-list"></div>
       </div>
@@ -119,7 +133,7 @@
             <svg><use href="#i-logo"/></svg>
             <span>OpenQoder</span>
           </div>
-          <span class="version">LOCAL</span>
+          <span class="version">AGENT</span>
         </div>
       </div>
     </aside>
@@ -153,17 +167,17 @@
             <div class="welcome-head">
               <div class="welcome-badge">
                 <span class="welcome-badge-dot"></span>
-                <span>Local Agentic Coding Workspace</span>
+                <span>Autonomous Coding Agent · Vision Ready</span>
               </div>
-              <h1>The New OpenQoder: An Agentic Coding Workspace</h1>
-              <p>Connect your local 9Router or OmniRoute catalog, attach project files, and build cleanly from one focused workspace.</p>
+              <h1>The New OpenQoder: An Autonomous Coding Agent</h1>
+              <p>Open a local workspace, inspect code and images, edit files with diffs and undo, and run commands autonomously through your 9Router or OmniRoute models.</p>
               <div class="welcome-ctas">
                 <button type="button" class="cta-primary" id="welcome-connect">
                   <svg><use href="#i-sliders"/></svg>
                   <span>Connect Router</span>
                 </button>
                 <button type="button" class="cta-secondary" id="welcome-project">
-                  <span>Open Project Folder</span>
+                  <span>Open Workspace Folder</span>
                   <svg><use href="#i-arrow-right"/></svg>
                 </button>
               </div>
@@ -183,19 +197,19 @@
               <div class="showcase-card">
                 <div class="showcase-card-bar">
                   <span class="showcase-dots"><i></i><i></i><i></i></span>
-                  <span class="showcase-bar-title">openqoder-workspace — local session</span>
-                  <span class="showcase-bar-pill">Coding</span>
+                  <span class="showcase-bar-title">openqoder-agent — autonomous workspace</span>
+                  <span class="showcase-bar-pill">Tools + Vision</span>
                 </div>
                 <div class="showcase-card-body">
                   <div class="showcase-line">
                     <span class="showcase-check">✓</span>
-                    <span>Router proxy bound strictly to loopback (<code>127.0.0.1</code>)</span>
+                    <span>Reads files &amp; images, runs tests, and edits code with <code>Undo</code></span>
                   </div>
                   <div class="showcase-diff-card">
                     <div class="showcase-diff-head">
                       <span class="showcase-diff-icon"><svg><use href="#i-file-doc"/></svg></span>
-                      <span class="showcase-diff-title">Ready for project context &amp; fenced code review</span>
-                      <span class="showcase-diff-stats"><span class="stat-add">+Live</span> <span class="stat-muted">Stream</span></span>
+                      <span class="showcase-diff-title">Edited workspace files · Approval &amp; Diff Review</span>
+                      <span class="showcase-diff-stats"><span class="stat-add">+Tools</span> <span class="stat-muted">Local</span></span>
                     </div>
                   </div>
                 </div>
@@ -204,41 +218,41 @@
 
             <div class="suggestions-section" id="suggestions">
               <div class="suggestions-header">
-                <span class="suggestions-title">Start a workflow</span>
-                <span class="suggestions-sub">Choose a starter prompt or type your own below</span>
+                <span class="suggestions-title">Start an autonomous task</span>
+                <span class="suggestions-sub">Paste or drop screenshots anytime</span>
               </div>
               <div class="suggestions-grid">
-                <button type="button" class="suggestion-card" data-prompt="Help me plan and build a clean web application. Ask me for the core requirements and stack first.">
+                <button type="button" class="suggestion-card" data-prompt="Explore this workspace, summarize the project architecture, and check if tests pass.">
                   <span class="suggestion-top">
                     <span class="suggestion-icon"><svg><use href="#i-code"/></svg></span>
-                    <span class="suggestion-tag">Build</span>
+                    <span class="suggestion-tag">Explore</span>
                   </span>
-                  <span class="suggestion-name">Build an application</span>
-                  <span class="suggestion-desc">Architect features, components, and implementation steps.</span>
+                  <span class="suggestion-name">Explore &amp; test workspace</span>
+                  <span class="suggestion-desc">Inspect project files, understand structure, and run tests.</span>
                 </button>
-                <button type="button" class="suggestion-card" data-prompt="Explain this code concept step by step with concise examples: ">
+                <button type="button" class="suggestion-card" data-prompt="Inspect the attached image/screenshot and implement the matching UI or fix the visual issues in this workspace.">
                   <span class="suggestion-top">
-                    <span class="suggestion-icon"><svg><use href="#i-spark"/></svg></span>
-                    <span class="suggestion-tag">Learn</span>
+                    <span class="suggestion-icon"><svg><use href="#i-image"/></svg></span>
+                    <span class="suggestion-tag">Vision</span>
                   </span>
-                  <span class="suggestion-name">Explain a concept</span>
-                  <span class="suggestion-desc">Break down unfamiliar patterns or algorithms clearly.</span>
+                  <span class="suggestion-name">Build from screenshot</span>
+                  <span class="suggestion-desc">Attach or paste an image and let the agent inspect &amp; code it.</span>
                 </button>
-                <button type="button" class="suggestion-card" data-prompt="Help me debug an issue. First, ask me for the relevant code, expected behavior, and error output.">
+                <button type="button" class="suggestion-card" data-prompt="Find and fix the failing behavior or bug in this workspace, then run verification commands to confirm the fix.">
                   <span class="suggestion-top">
                     <span class="suggestion-icon"><svg><use href="#i-terminal"/></svg></span>
-                    <span class="suggestion-tag">Debug</span>
+                    <span class="suggestion-tag">Fix</span>
                   </span>
-                  <span class="suggestion-name">Debug an issue</span>
-                  <span class="suggestion-desc">Isolate root causes from stack traces and attached files.</span>
+                  <span class="suggestion-name">Debug &amp; verify fix</span>
+                  <span class="suggestion-desc">Trace errors, patch code, and re-run commands automatically.</span>
                 </button>
-                <button type="button" class="suggestion-card" data-prompt="Review the attached code for correctness, edge cases, and maintainability, and suggest minimal improvements.">
+                <button type="button" class="suggestion-card" data-prompt="Review recent code changes in this workspace for bugs, edge cases, and clean improvements.">
                   <span class="suggestion-top">
                     <span class="suggestion-icon"><svg><use href="#i-file-doc"/></svg></span>
                     <span class="suggestion-tag">Review</span>
                   </span>
-                  <span class="suggestion-name">Review attached code</span>
-                  <span class="suggestion-desc">Inspect project files for bugs, types, and clean refactors.</span>
+                  <span class="suggestion-name">Audit &amp; refactor code</span>
+                  <span class="suggestion-desc">Search across files, inspect diffs, and apply clean updates.</span>
                 </button>
               </div>
             </div>
@@ -251,24 +265,26 @@
       <div class="composer-area">
         <div class="composer-wrap">
           <form class="composer" id="composer">
-            <textarea id="prompt" rows="2" placeholder="Continue this session... or describe a coding task" aria-label="Message OpenQoder"></textarea>
-            <div class="attachment" id="attachment" hidden>
-              <span class="attachment-badge"><svg><use href="#i-file-doc"/></svg></span>
-              <span id="attachment-name"></span>
-              <button type="button" id="remove-attachment" aria-label="Remove attached file">
-                <svg><use href="#i-close"/></svg>
-              </button>
-            </div>
+            <textarea id="prompt" rows="2" placeholder="Describe a coding task, paste a screenshot (Ctrl+V), or drop files..." aria-label="Message OpenQoder"></textarea>
+            <input type="file" id="file-picker" multiple hidden accept="image/*,.txt,.md,.py,.js,.ts,.tsx,.jsx,.mjs,.cjs,.json,.css,.scss,.html,.xml,.svg,.yml,.yaml,.toml,.ini,.cfg,.sh,.bash,.ps1,.sql,.csv,.rs,.go,.java,.c,.cpp,.h,.hpp,.rb,.php">
+            <div class="attachment-strip" id="attachment-strip" hidden></div>
             <div class="composer-toolbar">
               <div class="composer-left">
-                <button type="button" class="composer-add" id="composer-project" title="Attach from project folder" aria-label="Open project folder">
+                <button type="button" class="composer-add" id="composer-project" title="Open workspace folder" aria-label="Open workspace folder">
                   <svg><use href="#i-plus"/></svg>
                 </button>
+                <button type="button" class="composer-add" id="composer-attach" title="Attach image or file (or paste/drop)" aria-label="Attach image or file">
+                  <svg><use href="#i-image"/></svg>
+                </button>
                 <div class="toolbar-divider"></div>
-                <span class="composer-mode-tag">
-                  <svg><use href="#i-code"/></svg>
-                  <span>Ask for code</span>
-                </span>
+                <div class="approval-select-wrap">
+                  <svg><use href="#i-shield"/></svg>
+                  <select id="approval-mode" aria-label="Execution approval mode">
+                    <option value="ask">Ask for approval</option>
+                    <option value="auto">Auto-run</option>
+                    <option value="readonly">Read-only</option>
+                  </select>
+                </div>
               </div>
               <div class="composer-right">
                 <div class="model-select-wrap">
@@ -282,7 +298,7 @@
                 </button>
                 <span class="enter-hint">Enter</span>
                 <button class="send-button" id="send-button" aria-label="Send message" type="submit">
-                  <svg><use href="#i-arrow"/></svg>
+                  <svg id="send-icon"><use href="#i-arrow"/></svg>
                 </button>
               </div>
             </div>
@@ -292,7 +308,7 @@
             <div class="footer-left">
               <span class="footer-item">
                 <svg><use href="#i-folder"/></svg>
-                <span id="footer-folder">No folder open</span>
+                <span id="footer-folder">No workspace</span>
               </span>
               <span class="footer-item">
                 <svg><use href="#i-laptop"/></svg>
@@ -304,7 +320,7 @@
               </span>
             </div>
             <div class="footer-right">
-              <span class="footer-disclaimer">Review generated code</span>
+              <span class="footer-disclaimer" id="footer-agent-state">Agent ready</span>
               <span class="footer-meter" id="footer-meter">
                 <span class="meter-bars" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span>
                 <span class="meter-text" id="footer-meter-text">Offline</span>
@@ -316,6 +332,7 @@
     </main>
   </div>
 
+  <!-- Settings Modal -->
   <div class="modal-backdrop" id="settings-modal" hidden>
     <section class="modal" role="dialog" aria-modal="true" aria-labelledby="settings-title">
       <div class="modal-header">
@@ -340,16 +357,55 @@
         <p class="field-help">Use your router's OpenAI-compatible API URL, including <code>/v1</code>.</p>
         <label for="api-key">Router API key <span>optional if your router allows it</span></label>
         <input id="api-key" type="password" autocomplete="off" placeholder="Enter your router API key">
-        <p class="field-help">Saved only in this browser on this device. Configure free providers and their credentials in your router first.</p>
+        <p class="field-help">Saved only in this browser on this device. Use a vision &amp; tool-capable model in your router for autonomous image + code tasks.</p>
         <div class="modal-note">
           <svg><use href="#i-spark"/></svg>
-          <span>Models are loaded live from your router. Availability and pricing depend on your router configuration; select a provider and model you have verified are free.</span>
+          <span>Models are loaded live from your router. Availability and pricing depend on your router configuration.</span>
         </div>
         <div class="modal-actions">
           <button type="button" class="secondary-button" id="cancel-settings">Cancel</button>
           <button type="submit" class="primary-button" id="save-settings">Save &amp; load models</button>
         </div>
       </form>
+    </section>
+  </div>
+
+  <!-- Workspace Path Modal -->
+  <div class="modal-backdrop" id="workspace-modal" hidden>
+    <section class="modal" role="dialog" aria-modal="true" aria-labelledby="workspace-title">
+      <div class="modal-header">
+        <div>
+          <div class="modal-kicker">OPENQODER · WORKSPACE</div>
+          <h2 id="workspace-title">Open workspace folder</h2>
+          <p>Enter a local project folder path for the autonomous agent.</p>
+        </div>
+        <button class="icon-button" id="close-workspace-modal" type="button" aria-label="Close workspace dialog">
+          <svg><use href="#i-close"/></svg>
+        </button>
+      </div>
+      <form id="workspace-form">
+        <label for="workspace-path-input">Folder path</label>
+        <input id="workspace-path-input" type="text" placeholder="C:\Users\David\Projects\my-app" required>
+        <p class="field-help">All file reads, edits, searches, and shell commands executed by the agent stay scoped to this folder.</p>
+        <div class="modal-actions">
+          <button type="button" class="secondary-button" id="browse-workspace-native">Browse…</button>
+          <button type="button" class="secondary-button" id="cancel-workspace-modal">Cancel</button>
+          <button type="submit" class="primary-button">Open folder</button>
+        </div>
+      </form>
+    </section>
+  </div>
+
+  <!-- Image Lightbox Modal -->
+  <div class="modal-backdrop" id="image-modal" hidden>
+    <section class="image-lightbox" role="dialog" aria-modal="true" aria-label="Image preview">
+      <div class="image-lightbox-bar">
+        <span id="image-modal-title">Image preview</span>
+        <button class="icon-button" id="close-image-modal" type="button" aria-label="Close image preview">
+          <svg><use href="#i-close"/></svg>
+        </button>
+      </div>
+      <img id="image-modal-img" alt="Attached image preview">
     </section>
   </div>
 
