@@ -1,6 +1,6 @@
 # OpenQoder
 
-A lightweight local autonomous coding agent and multimodal workspace for an existing 9Router or OmniRoute installation. It discovers models from the router's live OpenAI-compatible catalog, inspects code and images, edits files with diff review and undo, and executes workspace commands through the selected router. OpenQoder is an independent project, not an official Qoder product.
+A lightweight local autonomous coding agent and multimodal workspace supporting **Puter.js** natively (`500+` models with no local router or API key required) as well as **9Router** and **OmniRoute** installations. It discovers live models, inspects code and images, edits files with diff review and undo, and executes workspace commands. OpenQoder is an independent project, not an official Qoder product.
 
 ## Screenshots
 
@@ -15,15 +15,16 @@ A lightweight local autonomous coding agent and multimodal workspace for an exis
 ## Start
 
 1. Install Python 3.9 or newer. No Python packages are required.
-2. Start and configure [9Router](https://github.com/decolua/9router) or [OmniRoute](https://github.com/diegosouzapw/OmniRoute). Connect the providers you want to use in that router's dashboard. Both commonly expose `http://localhost:20128/v1`; use a different port if that is how your instance is configured.
-3. Double-click **Start OpenQoder.cmd**, or run `python server.py --open` from this folder. Keep the terminal window open. The app opens at `http://127.0.0.1:8765`, or the next available port through 8795. The terminal shows the actual address. Close the terminal or press Ctrl+C to stop it.
-4. In the app, enter your router's local base URL and its endpoint API key, connect, and select a model from the live list. Refresh the list after changing providers or models in your router.
+2. Double-click **Start OpenQoder.cmd**, or run `python server.py --open` from this folder. Keep the terminal window open. The app opens at `http://127.0.0.1:8765`, or the next available port through 8795. The terminal shows the actual address. Close the terminal or press Ctrl+C to stop it.
+3. Choose how you want to connect in **Settings**:
+   - **Puter.js (Native · 500+ models)**: Select `Puter.js (Native · 500+ models)`, sign in with Puter when prompted (user-pays model — no router URL or API key required), and load the live catalog via `puter.ai.listModels()` / `puter.ai.chat()`.
+   - **9Router / OmniRoute / Custom OpenAI-compatible router**: Start and configure [9Router](https://github.com/decolua/9router) or [OmniRoute](https://github.com/diegosouzapw/OmniRoute) (commonly exposing `http://localhost:20128/v1`), enter your local base URL and endpoint API key, connect, and select a model from the live list.
 
 To use another app port, run `python server.py --port 8766 --open`.
 
 ## Model availability and costs
 
-The live catalog comes from your router and may include paid as well as free models. A catalog entry does not guarantee that a model is free, currently available, configured, or suitable for chat. Check the provider's terms, account, and quotas in your router before use. Specific model names, including DeepSeek, GLM, ERNIE, and Qwen variants, only appear if your installed router exposes them; OpenQoder does not manufacture model access or silently substitute models.
+When using a local router, the live catalog comes from your router and may include paid as well as free models. When using **Puter.js**, models come directly from Puter's catalog under Puter's user-pays model. A catalog entry does not guarantee that a model is free, currently available, configured, supports tool calling/vision, or is suitable for chat. Check the provider's or Puter's terms, account, and quotas before use. Specific model names, including DeepSeek, GLM, ERNIE, and Qwen variants, only appear if your selected provider exposes them; OpenQoder does not manufacture model access or silently substitute models.
 
 ## Autonomous Agent & Vision Capabilities
 
@@ -35,7 +36,7 @@ OpenQoder operates as a local autonomous coding agent when a workspace folder is
 
 ## Scope and privacy
 
-The server binds strictly to loopback (`127.0.0.1`), scopes file operations to your selected workspace folder, and proxies model requests only to local HTTP router addresses. The browser stores connection settings (including the router key), workspace path, and chat history locally. File contents, attached images, and conversation content pass to your selected router and onward to its configured provider. Review the router and provider privacy policies for their handling of your data.
+The server binds strictly to loopback (`127.0.0.1`), scopes file operations to your selected workspace folder, and proxies router requests only to local HTTP router addresses. The browser stores connection settings (including any local router key), workspace path, and chat history locally. File contents, attached images, and conversation content pass to your selected local router (and onward to its configured provider) or directly to Puter when **Puter.js** is selected. Review your router, provider, and Puter privacy policies for their handling of your data.
 
 If the catalog does not load, check that the router is running, that its API key and port are correct, and that at least one provider is connected. The two routers use the same default port, so run them on different ports if using both at once.
 

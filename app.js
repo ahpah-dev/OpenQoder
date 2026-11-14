@@ -228,6 +228,7 @@ function titleOf(chat) {
 }
 
 function routerDisplayName(router) {
+  if (router === 'puter') return 'Puter.js';
   if (router === 'omniroute') return 'OmniRoute';
   if (router === 'custom') return 'Custom Router';
   return '9Router';
@@ -258,14 +259,18 @@ function updateStatusBar() {
     openBtn.title = settings.workspaceRoot || 'Open workspace folder';
   }
   if (routerEl) {
-    let portSuffix = '';
-    try {
-      const parsed = new URL(settings.baseUrl);
-      if (parsed.port) portSuffix = ` · :${parsed.port}`;
-    } catch {
-      // Ignore partial URL
+    if (settings.router === 'puter') {
+      routerEl.textContent = 'Puter.js · Native';
+    } else {
+      let portSuffix = '';
+      try {
+        const parsed = new URL(settings.baseUrl);
+        if (parsed.port) portSuffix = ` · :${parsed.port}`;
+      } catch {
+        // Ignore partial URL
+      }
+      routerEl.textContent = `${routerDisplayName(settings.router)}${portSuffix}`;
     }
-    routerEl.textContent = `${routerDisplayName(settings.router)}${portSuffix}`;
   }
   if (meterEl && meterTextEl) {
     meterEl.classList.toggle('connected', routerConnected);
@@ -1036,12 +1041,50 @@ function newChat() {
   closeSidebarOnMobile();
 }
 
+async function syncPuterAuthUI() {
+  const statusEl = $('puter-auth-status');
+  const btnEl = $('puter-auth-btn');
+  if (!statusEl || !btnEl) return;
+  if (!window.puter?.auth) {
+    statusEl.textContent = 'Puter.js SDK not loaded yet (check internet connection).';
+    btnEl.textContent = 'Sign in with Puter';
+    btnEl.disabled = true;
+    return;
+  }
+  btnEl.disabled = false;
+  const signedIn = !!window.puter.auth.isSignedIn?.();
+  if (signedIn) {
+    btnEl.textContent = 'Sign out';
+    try {
+      const user = await window.puter.auth.getUser?.();
+      statusEl.textContent = user?.username
+        ? `Signed in as ${user.username}.`
+        : 'Signed in to Puter.';
+    } catch {
+      statusEl.textContent = 'Signed in to Puter.';
+    }
+  } else {
+    btnEl.textContent = 'Sign in with Puter';
+    statusEl.textContent = 'No API key or local router needed. Sign in when ready.';
+  }
+}
+
+function syncSettingsModalFields(routerVal) {
+  const isPuter = routerVal === 'puter';
+  $('local-router-fields').hidden = isPuter;
+  $('puter-auth-box').hidden = !isPuter;
+  $('base-url').required = !isPuter;
+  if (isPuter) syncPuterAuthUI();
+}
+
 function openSettings() {
   $('router-preset').value = settings.router;
   $('base-url').value = settings.baseUrl;
   $('api-key').value = settings.apiKey;
+  syncSettingsModalFields(settings.router);
   modal.hidden = false;
-  $('base-url').focus();
+  if (settings.router === 'puter') $('router-preset-trigger')?.focus();
+  else $('base-url').focus();
 }
 
 function closeSettings() {
@@ -1058,16 +1101,25 @@ async function loadModels() {
   modelSelect.innerHTML = '<option value="">Loading models…</option>';
   $('connection-label').textContent = 'Connecting…';
   try {
-    const response = await fetch('/api/models', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ baseUrl: settings.baseUrl, apiKey: settings.apiKey })
-    });
-    const data = await response.json();
-    if (!response.ok) throw new Error(errorText(data, 'Could not load models.'));
+    let models = [];
+    if (settings.router === 'puter') {
+      if (!window.puter?.ai?.listModels) {
+        throw new Error('Puter.js SDK is not loaded. Check your internet connection and reload.');
+      }
+      const list = await window.puter.ai.listModels();
+      models = Array.isArray(list) ? list : [];
+    } else {
+      const response = await fetch('/api/models', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ baseUrl: settings.baseUrl, apiKey: settings.apiKey })
+      });
+      const data = await response.json();
+      if (!response.ok) throw new Error(errorText(data, 'Could not load models.'));
+      models = Array.isArray(data) ? data : Array.isArray(data.data) ? data.data : [];
+    }
 
-    const models = Array.isArray(data) ? data : Array.isArray(data.data) ? data.data : [];
-    const ids = [...new Set(models.map(m => typeof m === 'string' ? m : m.id).filter(x => typeof x === 'string' && x))]
+    const ids = [...new Set(models.map(m => typeof m === 'string' ? m : (m?.id || m?.name)).filter(x => typeof x === 'string' && x))]
       .sort((a, b) => a.localeCompare(b));
 
     modelSelect.replaceChildren(new Option(ids.length ? 'Select a model' : 'No models available', ''));
@@ -1078,17 +1130,22 @@ async function loadModels() {
 
     routerConnected = true;
     $('connection-dot').classList.add('connected');
-    $('connection-label').textContent = `${routerDisplayName(settings.router)} connected`;
+    if (settings.router === 'puter') {
+      const signedIn = !!window.puter?.auth?.isSignedIn?.();
+      $('connection-label').textContent = signedIn ? 'Puter.js connected' : 'Puter.js ready';
+    } else {
+      $('connection-label').textContent = `${routerDisplayName(settings.router)} connected`;
+    }
     updateStatusBar();
-    if (!ids.length) toast('The router returned no models. Configure a provider in your router.');
+    if (!ids.length) toast('No models were returned by the selected provider.');
     return true;
   } catch (err) {
     routerConnected = false;
     modelSelect.innerHTML = '<option value="">Select a model</option>';
     $('connection-dot').classList.remove('connected');
-    $('connection-label').textContent = 'Connect a router';
+    $('connection-label').textContent = settings.router === 'puter' ? 'Puter.js offline' : 'Connect a router';
     updateStatusBar();
-    toast(err.message || 'Could not load models.');
+    toast(errorText(err, 'Could not load models.'));
     return false;
   }
 }
@@ -1124,7 +1181,129 @@ function toApiMessages(chatMessages) {
   return out;
 }
 
+async function callPuterModelOnce(apiMessages, tools, assistantMsg, signal) {
+  if (!window.puter?.ai?.chat) {
+    throw new Error('Puter.js SDK is not loaded. Check your internet connection.');
+  }
+  if (signal?.aborted) {
+    throw new DOMException('Aborted', 'AbortError');
+  }
+
+  const options = {
+    model: modelSelect.value,
+    stream: true
+  };
+  if (tools && tools.length) {
+    options.tools = tools;
+    options.toolChoice = 'auto';
+  }
+
+  const response = await window.puter.ai.chat(apiMessages, options);
+
+  const normalizeToolCall = tc => {
+    if (!tc) return null;
+    if (tc.function) {
+      return {
+        id: tc.id || `call_${crypto.randomUUID().slice(0, 8)}`,
+        type: 'function',
+        function: {
+          name: tc.function.name || '',
+          arguments: typeof tc.function.arguments === 'string'
+            ? tc.function.arguments
+            : JSON.stringify(tc.function.arguments ?? {})
+        }
+      };
+    }
+    return {
+      id: tc.id || `call_${crypto.randomUUID().slice(0, 8)}`,
+      type: 'function',
+      function: {
+        name: tc.name || '',
+        arguments: typeof tc.input === 'string'
+          ? tc.input
+          : JSON.stringify(tc.input ?? tc.arguments ?? {})
+      }
+    };
+  };
+
+  const mergeToolCalls = list => {
+    if (!Array.isArray(list) || !list.length) return;
+    const existing = assistantMsg.tool_calls || [];
+    for (const raw of list) {
+      const norm = normalizeToolCall(raw);
+      if (norm && norm.function.name) existing.push(norm);
+    }
+    if (existing.length) assistantMsg.tool_calls = existing;
+  };
+
+  if (response && typeof response[Symbol.asyncIterator] === 'function') {
+    for await (const chunk of response) {
+      if (signal?.aborted) {
+        throw new DOMException('Aborted', 'AbortError');
+      }
+      if (!chunk) continue;
+      if (chunk.error || chunk.type === 'error') {
+        throw new Error(errorText(chunk.error || chunk, 'Puter.js model stream failed.'));
+      }
+      if (typeof chunk.text === 'string') {
+        assistantMsg.content += chunk.text;
+      } else if (chunk.type === 'text' && typeof chunk.content === 'string') {
+        assistantMsg.content += chunk.content;
+      } else if (typeof chunk.choices?.[0]?.delta?.content === 'string') {
+        assistantMsg.content += chunk.choices[0].delta.content;
+      }
+
+      if (chunk.type === 'tool_use') mergeToolCalls([chunk]);
+      if (Array.isArray(chunk.tool_calls)) mergeToolCalls(chunk.tool_calls);
+      if (Array.isArray(chunk.calls)) mergeToolCalls(chunk.calls);
+      if (Array.isArray(chunk.message?.tool_calls)) mergeToolCalls(chunk.message.tool_calls);
+      if (Array.isArray(chunk.choices?.[0]?.delta?.tool_calls)) {
+        const list = assistantMsg.tool_calls || (assistantMsg.tool_calls = []);
+        for (const tc of chunk.choices[0].delta.tool_calls) {
+          const idx = tc.index ?? 0;
+          if (!list[idx]) {
+            list[idx] = { id: tc.id || `call_${idx}`, type: 'function', function: { name: '', arguments: '' } };
+          }
+          if (tc.id) list[idx].id = tc.id;
+          if (tc.function?.name) list[idx].function.name += tc.function.name;
+          if (tc.function?.arguments) list[idx].function.arguments += tc.function.arguments;
+        }
+      }
+      render();
+    }
+    if (window.puter?.auth?.isSignedIn?.()) {
+      $('connection-label').textContent = 'Puter.js connected';
+    }
+    return;
+  }
+
+  const msg = response?.message || response?.choices?.[0]?.message;
+  if (msg) {
+    if (typeof msg.content === 'string') {
+      assistantMsg.content = msg.content;
+    } else if (Array.isArray(msg.content)) {
+      assistantMsg.content = msg.content
+        .map(part => (typeof part === 'string' ? part : part?.text || ''))
+        .join('');
+    }
+    if (Array.isArray(msg.tool_calls)) mergeToolCalls(msg.tool_calls);
+  } else if (typeof response?.text === 'string') {
+    assistantMsg.content = response.text;
+  } else if (response != null) {
+    assistantMsg.content = String(response);
+  }
+  if (Array.isArray(response?.calls)) mergeToolCalls(response.calls);
+  if (window.puter?.auth?.isSignedIn?.()) {
+    $('connection-label').textContent = 'Puter.js connected';
+  }
+  render();
+}
+
 async function callModelOnce(apiMessages, tools, assistantMsg, signal) {
+  if (settings.router === 'puter') {
+    return callPuterModelOnce(apiMessages, tools, assistantMsg, signal);
+  }
+
   const payload = {
     baseUrl: settings.baseUrl,
     apiKey: settings.apiKey,
@@ -1483,7 +1662,7 @@ async function sendMessage(event) {
           if (!assistantMsg.content && !assistantMsg._steps.length) chat.messages.pop();
           break;
         }
-        if (useTools && err.status === 400 && /tool/i.test(err.message)) {
+        if (useTools && (err.status === 400 || settings.router === 'puter') && /tool|function/i.test(errorText(err, ''))) {
           useTools = false;
           toast('Selected model does not support tools; continuing in chat/vision mode.');
           await callModelOnce(apiMessages, null, assistantMsg, activeAbort.signal);
@@ -1606,9 +1785,9 @@ async function sendMessage(event) {
       persist();
     }
   } catch (err) {
-    if (err.name !== 'AbortError') {
+    if (err?.name !== 'AbortError') {
       persist();
-      toast(err.message || 'Could not complete agent turn.');
+      toast(errorText(err, 'Could not complete agent turn.'));
     }
   } finally {
     activeAbort = null;
@@ -1698,7 +1877,29 @@ $('close-image-modal').onclick = closeImageLightbox;
 imageModal.onclick = e => { if (e.target === imageModal) closeImageLightbox(); };
 
 $('router-preset').onchange = e => {
-  if (e.target.value !== 'custom') $('base-url').value = 'http://localhost:20128/v1';
+  const val = e.target.value;
+  if (val !== 'custom' && val !== 'puter') $('base-url').value = 'http://localhost:20128/v1';
+  syncSettingsModalFields(val);
+};
+
+$('puter-auth-btn').onclick = async () => {
+  if (!window.puter?.auth) {
+    toast('Puter.js SDK is not loaded.');
+    return;
+  }
+  try {
+    if (window.puter.auth.isSignedIn?.()) {
+      await window.puter.auth.signOut();
+      toast('Signed out of Puter.');
+    } else {
+      await window.puter.auth.signIn();
+      toast('Signed in to Puter.');
+    }
+    await syncPuterAuthUI();
+    if (settings.router === 'puter') await loadModels();
+  } catch (err) {
+    toast(errorText(err, 'Puter sign-in cancelled or failed.'));
+  }
 };
 
 $('settings-form').onsubmit = async e => {
@@ -1706,7 +1907,7 @@ $('settings-form').onsubmit = async e => {
   settings = {
     ...settings,
     router: $('router-preset').value,
-    baseUrl: $('base-url').value.trim().replace(/\/$/, ''),
+    baseUrl: $('base-url').value.trim().replace(/\/$/, '') || defaults.baseUrl,
     apiKey: $('api-key').value
   };
   saveSettings();
@@ -1844,5 +2045,5 @@ document.addEventListener('keydown', e => {
 
 if (innerWidth <= 760) $('sidebar').classList.add('collapsed');
 render();
-if (settings.model) loadModels();
+if (settings.model || settings.router === 'puter') loadModels();
 if (settings.workspaceRoot) loadWorkspace(settings.workspaceRoot, true);
