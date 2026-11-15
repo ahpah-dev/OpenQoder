@@ -142,6 +142,71 @@ const AGENT_TOOLS = [
   }
 ];
 
+// ---------------------------------------------------------------------------
+// Tool-call argument handling
+// ---------------------------------------------------------------------------
+
+const TOOL_SPECS = new Map(AGENT_TOOLS.map(t => [t.function.name, t.function]));
+
+/**
+ * Parse and validate a model-emitted tool call's arguments.
+ * Returns { ok: true, args } or { ok: false, error, tool } describing exactly
+ * what the model must correct. Never throws: the agent loop turns a failure
+ * into a tool result the model can recover from, instead of executing the
+ * call with silently-dropped arguments.
+ */
+function parseToolArguments(rawName, rawArguments) {
+  const name = typeof rawName === 'string' ? rawName.trim() : '';
+  if (!name) {
+    return { ok: false, error: 'Tool call is missing a function name.', tool: '' };
+  }
+  const spec = TOOL_SPECS.get(name);
+  if (!spec) {
+    return {
+      ok: false,
+      tool: name,
+      error: `Unknown tool "${name}". Available tools: ${[...TOOL_SPECS.keys()].join(', ')}. Call one of these instead.`
+    };
+  }
+
+  const text = typeof rawArguments === 'string' ? rawArguments.trim() : '';
+  let args = {};
+  if (text) {
+    try {
+      args = JSON.parse(text);
+    } catch (err) {
+      return {
+        ok: false,
+        tool: name,
+        error: `Arguments for "${name}" were not valid JSON (${err.message}). Re-issue the call with a single valid JSON object.`,
+        raw: text.slice(0, 500)
+      };
+    }
+  }
+  if (args === null || typeof args !== 'object' || Array.isArray(args)) {
+    return {
+      ok: false,
+      tool: name,
+      error: `Arguments for "${name}" must be a JSON object, but received ${Array.isArray(args) ? 'an array' : typeof args}.`
+    };
+  }
+
+  const required = Array.isArray(spec.parameters?.required) ? spec.parameters.required : [];
+  const missing = required.filter(key => {
+    const value = args[key];
+    return value === undefined || value === null || (typeof value === 'string' && value === '');
+  });
+  if (missing.length) {
+    return {
+      ok: false,
+      tool: name,
+      error: `Missing required argument(s) for "${name}": ${missing.join(', ')}. Required: ${required.join(', ')}.`
+    };
+  }
+
+  return { ok: true, tool: name, args };
+}
+
 function readStore(key, fallback) {
   try {
     return JSON.parse(localStorage.getItem(key)) ?? fallback;
@@ -1171,14 +1236,48 @@ function toApiMessages(chatMessages) {
     } else if (m.role === 'assistant') {
       const msg = { role: 'assistant', content: m.content ?? '' };
       if (Array.isArray(m.tool_calls) && m.tool_calls.length) {
-        msg.tool_calls = m.tool_calls;
+        msg.tool_calls = m.tool_calls
+          .filter(tc => tc?.function?.name)
+          .map(tc => ({
+            id: tc.id,
+            type: 'function',
+            function: {
+              name: tc.function.name,
+              arguments: typeof tc.function.arguments === 'string'
+                ? tc.function.arguments
+                : JSON.stringify(tc.function.arguments ?? {})
+            }
+          }));
+        if (!msg.tool_calls.length) delete msg.tool_calls;
       }
       if (msg.content || msg.tool_calls) out.push(msg);
     } else if (m.role === 'tool') {
+      // A tool result without a matching id is rejected by most providers, so
+      // orphaned results are dropped rather than sent and breaking the turn.
+      if (!m.tool_call_id) continue;
       out.push({ role: 'tool', tool_call_id: m.tool_call_id, content: m.content });
     }
   }
   return out;
+}
+
+/** Ensure every tool call has a non-empty, unique id before it is sent back. */
+function ensureToolCallIds(toolCalls) {
+  const seen = new Set();
+  (toolCalls || []).forEach((tc, i) => {
+    if (!tc || !tc.function?.name) return;
+    let id = typeof tc.id === 'string' ? tc.id.trim() : '';
+    if (!id || seen.has(id)) {
+      id = `call_${crypto.randomUUID().slice(0, 12)}`;
+    }
+    seen.add(id);
+    tc.id = id;
+    tc.type = 'function';
+    if (typeof tc.function.arguments !== 'string') {
+      tc.function.arguments = JSON.stringify(tc.function.arguments ?? {});
+    }
+  });
+  return (toolCalls || []).filter(tc => tc?.function?.name);
 }
 
 async function callPuterModelOnce(apiMessages, tools, assistantMsg, signal) {
@@ -1662,7 +1761,11 @@ async function sendMessage(event) {
           if (!assistantMsg.content && !assistantMsg._steps.length) chat.messages.pop();
           break;
         }
-        if (useTools && (err.status === 400 || settings.router === 'puter') && /tool|function/i.test(errorText(err, ''))) {
+        // Only degrade to chat mode when the provider actually rejected the
+        // tool schema. Any other 400 (bad model, bad params) is a real error.
+        const message = errorText(err, '');
+        const toolSchemaRejected = err.status === 400 && /tool|function[_ ]?call|tools? are not supported/i.test(message);
+        if (useTools && toolSchemaRejected) {
           useTools = false;
           toast('Selected model does not support tools; continuing in chat/vision mode.');
           await callModelOnce(apiMessages, null, assistantMsg, activeAbort.signal);
@@ -1672,8 +1775,8 @@ async function sendMessage(event) {
         }
       }
 
-      const calls = assistantMsg.tool_calls;
-      if (!calls || !calls.length) {
+      const calls = ensureToolCallIds(assistantMsg.tool_calls);
+      if (!calls.length) {
         if (!assistantMsg.content) {
           chat.messages.pop();
           throw new Error('The router returned an empty response.');
@@ -1681,22 +1784,20 @@ async function sendMessage(event) {
         persist();
         break;
       }
+      assistantMsg.tool_calls = calls;
 
       const pendingImages = [];
       for (const tc of calls) {
         if (activeAbort.signal.aborted) break;
-        const toolName = tc.function?.name || '';
-        let args = {};
-        try {
-          args = JSON.parse(tc.function?.arguments || '{}');
-        } catch {
-          args = {};
-        }
+        // Validate before touching the workspace: a malformed or incomplete
+        // call becomes a tool result the model can correct, not a crash.
+        const parsed = parseToolArguments(tc.function?.name, tc.function?.arguments);
+        const args = parsed.args || {};
 
-        const desc = describeToolAction(toolName, args);
+        const desc = describeToolAction(parsed.tool || 'unknown_tool', args);
         const step = {
-          id: tc.id || crypto.randomUUID(),
-          tool: toolName,
+          id: tc.id,
+          tool: parsed.tool || 'unknown_tool',
           verb: desc.verb,
           target: desc.target,
           approvalPreview: desc.preview,
@@ -1707,7 +1808,21 @@ async function sendMessage(event) {
         assistantMsg._steps.push(step);
         render();
 
-        const isMutating = !READ_ONLY_TOOLS.has(toolName);
+        if (!parsed.ok) {
+          step.status = 'error';
+          step.meta = 'Invalid arguments';
+          step.detail = parsed.error;
+          step.expanded = true;
+          chat.messages.push({
+            role: 'tool',
+            tool_call_id: tc.id,
+            content: JSON.stringify({ ok: false, error: parsed.error, retryable: true })
+          });
+          render();
+          continue;
+        }
+
+        const isMutating = !READ_ONLY_TOOLS.has(parsed.tool);
         if (isMutating && settings.approvalMode === 'readonly') {
           step.status = 'rejected';
           step.meta = 'Read-only';
@@ -1742,7 +1857,7 @@ async function sendMessage(event) {
 
         try {
           const result = await executeAgentTool(
-            toolName,
+            parsed.tool,
             args,
             step,
             activeAbort.signal,
@@ -1769,6 +1884,8 @@ async function sendMessage(event) {
         render();
       }
 
+      // Attach images only after every tool result for this turn is recorded,
+      // otherwise providers see a user message wedged between tool results.
       if (pendingImages.length) {
         chat.messages.push({
           role: 'user',
@@ -1783,6 +1900,9 @@ async function sendMessage(event) {
         });
       }
       persist();
+      if (stepIdx === MAX_AGENT_STEPS - 1) {
+        toast(`Stopped after ${MAX_AGENT_STEPS} tool steps. Send another message to continue.`);
+      }
     }
   } catch (err) {
     if (err?.name !== 'AbortError') {
